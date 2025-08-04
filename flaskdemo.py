@@ -39,11 +39,19 @@ def results():
     return render_template("results.html", page=page)
 
 
+@app.route('/random')
+def random_article():
+    """Route to show a random Wikipedia article."""
+    random_title = wikipedia.random()
+    page = get_page(random_title)
+    return render_template("results.html", page=page)
+
+
 def get_page(search_term):
     """Get a Wikipedia page object based on the search term."""
     # This function is not a route
     try:
-        page = wikipedia.page(search_term)
+        page = wikipedia.page(search_term, auto_suggest=False)
     except wikipedia.exceptions.PageError:
         # No such page, so return a random one
         page = wikipedia.page(wikipedia.random())
